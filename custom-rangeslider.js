@@ -428,16 +428,29 @@
 
     // Validate steps
     steps.forEach((step, index) => {
-        if (c % step > 0) T.alert(`Step ${index + 1} [${step}] doesn't fit...`);
+        if (c % step > 0) T.alert(`Step ${index + 1} [${step}] doesn't fit the range [${p},${E}].`, "info");
     });
 
     let f = dt(defaultStep);
-    return c % defaultStep > 0 && T.alert(...), {
-        // Modified return object
+    return {
+        trackElement: t,
+        fillElement: r,
+        handleElements: n,
+        inputElements: s,
+        displayValueElements: o,
+        formatValueDisplay: i,
+        trackLeft: u,
+        trackRight: l,
+        trackWidth: d,
+        minRange: p,
+        maxRange: E,
+        totalRange: c,
         steps: steps,
         defaultStep: defaultStep,
-        // ...
-    }
+        precision: f,
+        updateOnRelease: a
+    };
+};
 };
     var k = class {
         constructor(t, {
@@ -609,21 +622,34 @@
             this.sibling = t, this.updateSiblingConstraints()
         }
     };
-    var It = ({
+var It = ({
     handleElements: e,
-    // ...
-    steps: a,       // Changed from 'step' to 'steps'
-    defaultStep: u,  // New parameter
-    // ...
+    inputElements: t,
+    displayValueElements: r,
+    formatValueDisplay: s,
+    minRange: n,
+    maxRange: o,
+    trackWidth: i,
+    steps: a,
+    defaultStep: u,
+    precision: l
 }) => {
-    let l = e.slice(0, 2).map((E, c) => {
-        let b = ...,
-            step = a[c] !== undefined ? a[c] : u,  // Handle-specific step
-            f = U(b, step, l, n),                  // Changed 'a' to 'step'
-            // ...
-            step: step,                             // Changed 'a' to 'step'
-            // ...
+    // Ensure steps array has entries for all handles
+    if (a.length < e.length) {
+        for (let c = a.length; c < e.length; c++) {
+            a[c] = u;
+        }
+    }
+
+    let d = e.slice(0, 2).map((E, c) => {
+        let b = parseFloat(E.getAttribute(M.start.key) || `${c === 0 ? n : o}`,
+            step = a[c],
+            f = U(b, step, l, n),
+            g = t[c],
+            I = r[c];
+        // ... rest of handle creation ...
     });
+    // ... rest of function ...
 };
 
                 })
