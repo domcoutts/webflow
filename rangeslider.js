@@ -373,64 +373,70 @@
             key: de,
             values: Ee
         }
-    } = M, ft = e => {
-        let t = G("track", {
-                operator: "prefixed",
-                scope: e
-            }),
-            r = G("fill", {
-                operator: "prefixed",
-                scope: e
-            }),
-            s = [...e.querySelectorAll("input")].filter($),
-            n = [...e.querySelectorAll(N("element", "handle", {
-                operator: "prefixed"
-            }))],
-            o = [...e.querySelectorAll(N("element", "displayValue", {
-                operator: "prefixed"
-            }))],
-            i = e.getAttribute(pe) === me.true,
-            a = e.getAttribute(de) === Ee.release;
-        if (!n.length || !t) {
-            T.alert("The rangeslider is missing a Track element or a Handle element.", "error");
-            return
-        }
-        let {
-            left: u,
-            right: l
-        } = t.getBoundingClientRect(), d = t.clientWidth;
-        t.style.position = "relative";
-        let p = parseFloat(e.getAttribute(le) || "0"),
-            E = parseFloat(e.getAttribute(ue) || `${p+1}`),
-            c = E - p;
-        if (Number.isNaN(c)) {
-            T.alert("Please make sure min and max are numbers.", "error");
-            return
-        }
-        if (Math.sign(c) === -1) {
-            T.alert("The min can't be greater than the max.", "error");
-            return
-        }
-        let b = parseFloat(e.getAttribute(ce) || `${c/100}`),
-            f = dt(b);
-        return c % b > 0 && T.alert(`The provided step [${b}] doesn't fit the range [${p},${E}], are you sure you want to use this value?`, "info"), {
-            trackElement: t,
-            fillElement: r,
-            handleElements: n,
-            inputElements: s,
-            displayValueElements: o,
-            formatValueDisplay: i,
-            trackLeft: u,
-            trackRight: l,
-            trackWidth: d,
-            minRange: p,
-            maxRange: E,
-            totalRange: c,
-            step: b,
-            precision: f,
-            updateOnRelease: a
-        }
-    };
+    } = M, var ft = (e) => {
+  let t = G("track", { operator: "prefixed", scope: e }),
+      r = G("fill", { operator: "prefixed", scope: e }),
+      s = [...e.querySelectorAll("input")].filter($),
+      n = [...e.querySelectorAll(N("element", "handle", { operator: "prefixed" }))],
+      o = [...e.querySelectorAll(N("element", "displayValue", { operator: "prefixed" }))],
+      i = e.getAttribute(pe) === me.true,
+      a = e.getAttribute(de) === Ee.release;
+
+  if (!n.length || !t) {
+    T.alert("The rangeslider is missing a Track element or a Handle element.", "error");
+    return;
+  }
+
+  let { left: u, right: l } = t.getBoundingClientRect(),
+      d = t.clientWidth;
+  t.style.position = "relative";
+
+  let customStepsAttr = e.getAttribute("fs-rangeslider-step-values");
+  let isCustomStepMode = !!customStepsAttr;
+  let stepValues = isCustomStepMode
+    ? customStepsAttr.split(",").map(s => parseFloat(s.trim())).filter(v => !isNaN(v))
+    : null;
+
+  let p = parseFloat(e.getAttribute(le) || (stepValues ? `${stepValues[0]}` : "0")),
+      E = parseFloat(e.getAttribute(ue) || (stepValues ? `${stepValues[stepValues.length - 1]}` : `${p + 1}`)),
+      c = E - p;
+
+  if (Number.isNaN(c)) {
+    T.alert("Please make sure min and max are numbers.", "error");
+    return;
+  }
+  if (Math.sign(c) === -1) {
+    T.alert("The min can't be greater than the max.", "error");
+    return;
+  }
+
+  let b = parseFloat(e.getAttribute(ce) || `${c / 100}`),
+      f = dt(b);
+
+  if (!isCustomStepMode && c % b > 0) {
+    T.alert(`The provided step [${b}] doesn't fit the range [${p},${E}], are you sure you want to use this value?`, "info");
+  }
+
+  return {
+    trackElement: t,
+    fillElement: r,
+    handleElements: n,
+    inputElements: s,
+    displayValueElements: o,
+    formatValueDisplay: i,
+    trackLeft: u,
+    trackRight: l,
+    trackWidth: d,
+    minRange: p,
+    maxRange: E,
+    totalRange: c,
+    step: b,
+    precision: f,
+    updateOnRelease: a,
+    customStepValues: stepValues // This can be passed into handlers later
+  };
+};
+
     var k = class {
         constructor(t, {
             minRange: r,
