@@ -1,0 +1,8 @@
+.checkout-discount input, .summary-gift-cards input {
+background-color: #00baef;
+color: #ffffff;
+}
+
+::placeholder {
+    color: #ffffff;
+}
